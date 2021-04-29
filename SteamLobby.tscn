@@ -161,3 +161,26 @@ __meta__ = {
 margin_left = 205.0
 margin_right = 669.0
 margin_bottom = 40.0
+
+[node name="PopupPanel" type="PopupPanel" parent="."]
+visible = true
+margin_left = 103.422
+margin_top = 661.898
+margin_right = 911.422
+margin_bottom = 1113.9
+
+[node name="Panel" type="Panel" parent="PopupPanel"]
+margin_right = 808.0
+margin_bottom = 452.0
+
+[node name="Label" type="Label" parent="PopupPanel/Panel"]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "Lobby List"
+
+[node name="Button" type="Button" parent="PopupPanel/Panel"]
+margin_left = 660.0
+margin_top = 407.0
+margin_right = 801.0
+margin_bottom = 447.0
+text = "Close"
