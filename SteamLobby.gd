@@ -93,6 +93,46 @@ func _add_Player_List(steam_id: int, steam_name: String):
 		player_list.add_text(str(MEMBER['steam_name']) + "\n")
 
 
+func _send_Chat_Message() -> void:
+	# Get the entered chat message
+	var MESSAGE: String = chat_input.text
+
+	# Pass the message to Steam
+	var SENT: bool = Steam.sendLobbyChatMsg(Globals.LOBBY_ID, MESSAGE)
+
+	# Was it sent successfully?
+	if not SENT:
+		_display_message("ERROR: Chat message failed to send.")
+
+	# Clear the chat input
+	chat_input.text = ""
+
+
+func _leave_Lobby() -> void:
+	# If in a lobby, leave it
+	if Globals.LOBBY_ID != 0:
+		# Leaving feedback
+		_display_message("Leaving lobby...")
+
+		# Send leave request to Steam
+		Steam.leaveLobby(Globals.LOBBY_ID)
+
+		# Wipe the Steam lobby ID then display the default lobby ID and player list title
+		Globals.LOBBY_ID = 0
+
+		# Resetting player status
+		get_lobby_name.text = "Lobby Name"
+		player_count.text = "Players (0)"
+		player_list.clear()
+
+		# Close session with all users
+		for MEMBERS in Globals.LOBBY_MEMBERS:
+			var _tmp: int = Steam.closeP2PSessionWithUser(MEMBERS['steam_id'])
+
+		# Clear the local lobby list
+		Globals.LOBBY_MEMBERS.clear()
+
+
 # Displays a message to the chat, replaces print.
 func _display_message(message: String) -> void:
 	lobby_output.add_text("\n" + str(message))
@@ -108,7 +148,7 @@ func _on_Lobby_Created(connect: int, lobbyID: int) -> void:
 		# Set the lobby ID
 		Globals.LOBBY_ID = lobbyID
 
-		# TODO: Post this in the lobby chat.
+		# Display the lobby creation in chat.
 		_display_message("Created lobby: " + set_lobby_name.text)
 
 		# Set some lobby data...
@@ -164,22 +204,57 @@ func _on_Lobby_Chat_Update(_lobbyID: int, _changedID: int, makingChangeID: int, 
 
 	# If a player has joined the lobby
 	if chatState == 1:
-		_display_message(str(CHANGER)+" has joined the lobby.")
+		_display_message(str(CHANGER) + " has joined the lobby.")
 	# Else if a player has left the lobby
 	elif chatState == 2:
-		_display_message(str(CHANGER)+" has left the lobby.")
+		_display_message(str(CHANGER) + " has left the lobby.")
 	# Else if a player has been kicked
 	elif chatState == 8:
-		_display_message(str(CHANGER)+" has been kicked from the lobby.")
+		_display_message(str(CHANGER) + " has been kicked from the lobby.")
 	# Else if a player has been banned
 	elif chatState == 16:
-		_display_message(str(CHANGER)+" has been banned from the lobby.")
+		_display_message(str(CHANGER) + " has been banned from the lobby.")
 	# Else there was some unknown change
 	else:
-		_display_message(str(CHANGER)+" did... something.")
+		_display_message(str(CHANGER) + " did... something.")
 
 	# Update the lobby now that a change has occurred
 	_get_Lobby_Members()
+
+
+func _on_Lobby_Match_List(lobbies: Array) -> void:
+	for LOBBY in lobbies:
+		# Pull lobby data from Steam
+		var LOBBY_NAME: String = Steam.getLobbyData(LOBBY, "name")
+
+		# Get the current number of members
+		var LOBBY_MEMBERS: int = Steam.getNumLobbyMembers(LOBBY)
+
+		# Create a button for the lobby
+		var LOBBY_BUTTON: Button = Button.new()
+		LOBBY_BUTTON.set_text(
+			(
+				"Lobby "
+				+ str(LOBBY)
+				+ ": "
+				+ str(LOBBY_NAME)
+				+ " - ["
+				+ str(LOBBY_MEMBERS)
+				+ "] Player(s)"
+			)
+		)
+		LOBBY_BUTTON.set_size(Vector2(800, 50))
+		LOBBY_BUTTON.set_name("lobby_" + str(LOBBY))
+		var _tmp: int = LOBBY_BUTTON.connect("pressed", self, "_join_Lobby", [LOBBY])
+
+		# Add the new lobby to the list
+		lobby_list.add_child(LOBBY_BUTTON)
+
+
+func _on_Lobby_Message(_result, user, message: String, _type):
+	var SENDER = Steam.getFriendPersonaName(user)
+	_display_message(str(SENDER) + " : " + str(message))
+
 
 # ---
 # Button Signal Functions
@@ -191,7 +266,14 @@ func _on_Create_pressed() -> void:
 
 
 func _on_Join_pressed() -> void:
-	pass  # Replace with function body.
+	# Popup the window
+	lobby_popup.popup()
+
+	# Set server search distance to worldwide
+	Steam.addRequestLobbyListDistanceFilter(search_distance.Worldwide)
+	_display_message("Searching for lobbies...")
+
+	Steam.requestLobbyList()
 
 
 func _on_Start_pressed() -> void:
@@ -199,15 +281,15 @@ func _on_Start_pressed() -> void:
 
 
 func _on_Leave_pressed() -> void:
-	pass  # Replace with function body.
+	_leave_Lobby()
 
 
 func _on_Message_pressed() -> void:
-	pass  # Replace with function body.
+	_send_Chat_Message()
 
 
 func _on_Close_pressed() -> void:
-	pass  # Replace with function body.
+	lobby_popup.hide()
 
 
 # ---
