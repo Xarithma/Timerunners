@@ -8,6 +8,7 @@ var STEAM_USERNAME: String = ""
 
 # Lobby vars
 var DATA
+var LOBBY_ID: int = 0
 var LOBBY_MEMBERS: Array = []
 var LOBBY_INVITE_ARG: bool = false
 

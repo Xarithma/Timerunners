@@ -6,19 +6,19 @@
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=5]
-size = 14
-font_data = ExtResource( 1 )
-
 [sub_resource type="DynamicFont" id=2]
-size = 12
+size = 14
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=3]
-size = 14
+size = 12
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=4]
+size = 14
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=5]
 size = 12
 font_data = ExtResource( 1 )
 
@@ -46,7 +46,7 @@ __meta__ = {
 margin_left = 292.0
 margin_right = 543.0
 margin_bottom = 22.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 2 )
 text = "Lobby Name:"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -88,7 +88,7 @@ margin_left = 828.86
 margin_top = 36.0
 margin_right = 996.86
 margin_bottom = 61.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 text = "SteamName"
 align = 2
 valign = 1
@@ -108,7 +108,7 @@ __meta__ = {
 [node name="Label" type="Label" parent="Players"]
 margin_right = 267.0
 margin_bottom = 46.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 4 )
 text = "Players (0)"
 align = 1
 valign = 1
@@ -130,7 +130,7 @@ __meta__ = {
 [node name="LobbyName" type="Label" parent="Chat"]
 margin_right = 185.0
 margin_bottom = 46.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 4 )
 text = "Lobby Name"
 align = 1
 valign = 1
@@ -139,9 +139,13 @@ __meta__ = {
 }
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Chat"]
+margin_left = 9.0
 margin_top = 46.0
-margin_right = 267.0
-margin_bottom = 354.0
+margin_right = 669.0
+margin_bottom = 347.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Leave" type="Button" parent="."]
 margin_left = 45.0
@@ -159,7 +163,7 @@ margin_left = 328.0
 margin_top = 530.0
 margin_right = 516.0
 margin_bottom = 570.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 5 )
 text = "Send Message"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -223,3 +227,10 @@ text = "Close"
 __meta__ = {
 "_edit_lock_": true
 }
+
+[connection signal="pressed" from="Create" to="." method="_on_Create_pressed"]
+[connection signal="pressed" from="Join" to="." method="_on_Join_pressed"]
+[connection signal="pressed" from="Start" to="." method="_on_Start_pressed"]
+[connection signal="pressed" from="Leave" to="." method="_on_Leave_pressed"]
+[connection signal="pressed" from="Message" to="." method="_on_Message_pressed"]
+[connection signal="pressed" from="LobbyListPopup/Panel/Close" to="." method="_on_Close_pressed"]
