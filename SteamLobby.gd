@@ -158,6 +158,10 @@ func _on_Lobby_Created(connect: int, lobbyID: int) -> void:
 		var lobby_name = Steam.getLobbyData(lobbyID, "name")
 		get_lobby_name.text = str(lobby_name)
 
+		# Allow P2P connections to fallback to being relayed through Steam if needed
+		var RELAY: bool = Steam.allowP2PPacketRelay(true)
+		print("Allowing Steam to be relay backup: " + str(RELAY))
+
 
 func _on_Lobby_Joined(lobbyID: int, _permissions: int, _locked: bool, _response: int) -> void:
 	# Set this lobby ID as your lobby ID
@@ -169,6 +173,9 @@ func _on_Lobby_Joined(lobbyID: int, _permissions: int, _locked: bool, _response:
 
 	# Get the lobby members
 	_get_Lobby_Members()
+
+	# Make the initial handshake
+	Globals.make_P2P_Handshake()
 
 
 func _on_Lobby_Join_Requested(lobbyID: int, friendID: int) -> void:
