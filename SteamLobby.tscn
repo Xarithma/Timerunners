@@ -114,9 +114,13 @@ align = 1
 valign = 1
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Players"]
+margin_left = 8.0
 margin_top = 46.0
-margin_right = 267.0
+margin_right = 258.0
 margin_bottom = 354.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Chat" type="Panel" parent="."]
 margin_left = 328.0

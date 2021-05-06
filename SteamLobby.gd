@@ -88,9 +88,15 @@ func _add_Player_List(steam_id: int, steam_name: String):
 	# Clear the current player-list
 	player_list.clear()
 
+	var tmp: int = 0
+
 	# Add players to the player-list
 	for MEMBER in Globals.LOBBY_MEMBERS:
 		player_list.add_text(str(MEMBER['steam_name']) + "\n")
+
+		tmp += 1
+		player_count.text = "Players (" + str(tmp) + ")"
+
 
 
 func _send_Chat_Message() -> void:

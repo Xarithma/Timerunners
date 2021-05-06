@@ -7,7 +7,7 @@ var STEAM_ID: int = 0
 var STEAM_USERNAME: String = ""
 
 # Lobby vars
-var DATA
+var LOBBY_DATA
 var LOBBY_ID: int = 0
 var LOBBY_MEMBERS: Array = []
 var LOBBY_INVITE_ARG: bool = false
@@ -54,14 +54,14 @@ func _read_P2P_Packet() -> void:
 			print("WARNING: read an empty packet with non-zero size!")
 
 		# Get the remote user's ID
-		var PACKET_ID: String = str(PACKET.steamIDRemote)
-		var PACKET_CODE: String = str(PACKET.data[0])
+		var _PACKET_ID: String = str(PACKET.steamIDRemote)
+		var _PACKET_CODE: String = str(PACKET.data[0])
 
 		# Make the packet data readable
-		var READABLE: PoolByteArray = bytes2var(PACKET.data.subarray(1, PACKET_SIZE - 1))
+		# var READABLE: PoolByteArray = bytes2var(PACKET.data.subarray(1, PACKET_SIZE - 1))
 
 		# Print the packet to output
-		print("Packet: " + str(READABLE))
+		# print("Packet: " + str(READABLE))
 
 		# Append logic here to deal with packet data
 
@@ -72,9 +72,9 @@ func send_P2P_Packet(target: String, packet_data: Dictionary) -> void:
 	var CHANNEL: int = 0
 
 	# Create a data array to send the data through
-	var DATA: PoolByteArray
-	DATA.append(256)
-	DATA.append_array(var2bytes(packet_data))
+	var _DATA: PoolByteArray
+	_DATA.append(256)
+	_DATA.append_array(var2bytes(packet_data))
 
 	# If sending a packet to everyone
 	if target == "all":
@@ -84,12 +84,12 @@ func send_P2P_Packet(target: String, packet_data: Dictionary) -> void:
 			for MEMBER in LOBBY_MEMBERS:
 				if MEMBER['steam_id'] != STEAM_ID:
 					var _tmp: int = Steam.sendP2PPacket(
-						MEMBER['steam_id'], DATA, SEND_TYPE, CHANNEL
+						MEMBER['steam_id'], _DATA, SEND_TYPE, CHANNEL
 					)
 
 	# Else sending it to someone specific
 	else:
-		var _tmp: int = Steam.sendP2PPacket(int(target), DATA, SEND_TYPE, CHANNEL)
+		var _tmp: int = Steam.sendP2PPacket(int(target), _DATA, SEND_TYPE, CHANNEL)
 
 
 func make_P2P_Handshake() -> void:
@@ -104,10 +104,10 @@ func make_P2P_Handshake() -> void:
 
 func _on_P2P_Session_Request(remoteID: int) -> void:
 	# Get the requester's name
-	var REQUESTER: String = Steam.getFriendPersonaName(remoteID)
+	var _REQUESTER: String = Steam.getFriendPersonaName(remoteID)
 
 	# Accept the P2P session; can apply logic to deny this request if needed
-	Steam.acceptP2PSessionWithUser(remoteID)
+	var _tmp: bool = Steam.acceptP2PSessionWithUser(remoteID)
 
 	# Make the initial handshake
 	make_P2P_Handshake()
