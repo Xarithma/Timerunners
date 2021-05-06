@@ -103,7 +103,6 @@ func _add_Player_List(steam_id: int, steam_name: String):
 		player_count.text = "Players (" + str(tmp) + ")"
 
 
-
 func _send_Chat_Message() -> void:
 	# Get the entered chat message
 	var MESSAGE: String = chat_input.text
@@ -147,7 +146,7 @@ func _leave_Lobby() -> void:
 func _start_game() -> void:
 	if Globals.LOBBY_MEMBERS == []:
 		return
-	
+
 	Globals.send_P2P_Packet("all", {"message": "startgame", "from": Globals.STEAM_ID})
 	var _load_game = get_tree().change_scene("res://Game.tscn")
 
