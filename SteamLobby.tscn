@@ -132,11 +132,11 @@ __meta__ = {
 }
 
 [node name="LobbyName" type="Label" parent="Chat"]
-margin_right = 185.0
+margin_left = 9.0
+margin_right = 194.0
 margin_bottom = 46.0
 custom_fonts/font = SubResource( 4 )
 text = "Lobby Name"
-align = 1
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -147,6 +147,7 @@ margin_left = 9.0
 margin_top = 46.0
 margin_right = 669.0
 margin_bottom = 347.0
+scroll_following = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

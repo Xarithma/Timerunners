@@ -32,6 +32,11 @@ func _ready() -> void:
 	_check_Command_Line()
 
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("lobby_send_message"):
+		_send_Chat_Message()
+
+
 # ---
 # Self-made functions
 # ---
@@ -137,6 +142,14 @@ func _leave_Lobby() -> void:
 
 		# Clear the local lobby list
 		Globals.LOBBY_MEMBERS.clear()
+
+
+func _start_game() -> void:
+	if Globals.LOBBY_MEMBERS == []:
+		return
+	
+	Globals.send_P2P_Packet("all", {"message": "startgame", "from": Globals.STEAM_ID})
+	var _load_game = get_tree().change_scene("res://Game.tscn")
 
 
 # Displays a message to the chat, replaces print.
@@ -290,7 +303,7 @@ func _on_Join_pressed() -> void:
 
 
 func _on_Start_pressed() -> void:
-	pass  # Replace with function body.
+	_start_game()
 
 
 func _on_Leave_pressed() -> void:

@@ -55,7 +55,7 @@ func _read_P2P_Packet() -> void:
 
 		# Get the remote user's ID
 		var _PACKET_ID: String = str(PACKET.steamIDRemote)
-		var _PACKET_CODE: String = str(PACKET.data[0])
+		var PACKET_CODE: String = str(PACKET.data[0])
 
 		# Make the packet data readable
 		# var READABLE: PoolByteArray = bytes2var(PACKET.data.subarray(1, PACKET_SIZE - 1))
@@ -64,6 +64,8 @@ func _read_P2P_Packet() -> void:
 		# print("Packet: " + str(READABLE))
 
 		# Append logic here to deal with packet data
+		if PACKET_CODE == "startgame":
+			var _load_game = get_tree().change_scene("res://Game.tscn")
 
 
 func send_P2P_Packet(target: String, packet_data: Dictionary) -> void:

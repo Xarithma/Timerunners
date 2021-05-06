@@ -1,0 +1,14 @@
+[gd_scene format=2]
+
+[node name="Game" type="Node2D"]
+
+[node name="Label" type="Label" parent="."]
+margin_left = 309.041
+margin_top = 280.257
+margin_right = 450.041
+margin_bottom = 294.257
+rect_scale = Vector2( 3, 3 )
+text = "Massive Wish Furcock"
+__meta__ = {
+"_edit_use_anchors_": false
+}
