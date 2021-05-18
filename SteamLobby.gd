@@ -1,7 +1,15 @@
 extends Node2D
 
+# ---
+# Enums
+# ---
+
 enum lobby_status { Private, Friends, Public, Invisible }
 enum search_distance { Close, Default, Far, Worldwide }
+
+# ---
+# Object definitions
+# ---
 
 onready var steam_username: Label = $SteamName
 onready var set_lobby_name: TextEdit = $Create/LobbySetter
@@ -12,6 +20,16 @@ onready var lobby_list: VBoxContainer = $LobbyListPopup/Panel/Scroll/VBox
 onready var player_count: Label = $Players/Label
 onready var player_list: RichTextLabel = $Players/RichTextLabel
 onready var chat_input: TextEdit = $Message/TextEdit
+
+# ---
+# Preloads
+# ---
+
+const lobby_selection: PackedScene = preload("res://LobbyJoinSelection.tscn")
+
+# ---
+# Godot functions
+# ---
 
 
 func _ready() -> void:
@@ -256,7 +274,7 @@ func _on_Lobby_Match_List(lobbies: Array) -> void:
 		var LOBBY_MEMBERS: int = Steam.getNumLobbyMembers(LOBBY)
 
 		# Create a button for the lobby
-		var LOBBY_BUTTON: Button = Button.new()
+		var LOBBY_BUTTON = lobby_selection.instance()
 		LOBBY_BUTTON.set_text(
 			(
 				"Lobby "
