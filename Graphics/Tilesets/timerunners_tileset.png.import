@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/YellowDragon(RunJump)2.png-3ef1903df282505517b881ed2b9b54c2.stex"
+path="res://.import/timerunners_tileset.png-bf5c43d00a7f2b1274c5ec666989d4ec.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Graphics/Characters/Dragon/Yellow/Jumping/YellowDragon(RunJump)2.png"
-dest_files=[ "res://.import/YellowDragon(RunJump)2.png-3ef1903df282505517b881ed2b9b54c2.stex" ]
+source_file="res://Graphics/Tilesets/timerunners_tileset.png"
+dest_files=[ "res://.import/timerunners_tileset.png-bf5c43d00a7f2b1274c5ec666989d4ec.stex" ]
 
 [params]
 
