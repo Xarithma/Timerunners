@@ -21,6 +21,7 @@ var velocity: Vector2 = Vector2.ZERO
 
 onready var camera := $PlayerCamera
 onready var hitbox := $PhysicsHitbox
+onready var texture := $Texture
 
 # ---
 # Godot functions
@@ -32,7 +33,11 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	pass
+	if event.is_action_pressed("move_left"):
+		texture.flip_h = true
+
+	if event.is_action_pressed("move_right"):
+		texture.flip_h = false
 
 
 # ---
@@ -46,5 +51,3 @@ func _send_player_data_packet() -> void:
 
 func _movement(delta: float) -> void:
 	velocity.y += GRAVITY
-
-
