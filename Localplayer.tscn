@@ -14,9 +14,9 @@
 [ext_resource path="res://Graphics/Characters/Dragon/Blue/Jumping/BlueDragon(RunJump)1.png" type="Texture" id=12]
 [ext_resource path="res://Graphics/Characters/Dragon/Blue/Jumping/BlueDragon(RunJump)3.png" type="Texture" id=13]
 
-[sub_resource type="CapsuleShape2D" id=1]
-radius = 16.0
-height = 32.0
+[sub_resource type="CapsuleShape2D" id=6]
+radius = 24.0
+height = 16.0
 
 [sub_resource type="Animation" id=2]
 resource_name = "IdleBlue"
@@ -88,7 +88,7 @@ position = Vector2( 120, 384 )
 script = ExtResource( 2 )
 
 [node name="PhysicsHitbox" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+shape = SubResource( 6 )
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 

@@ -16,6 +16,7 @@ const IDLE_MIN: int = 20
 # ---
 
 var motion: Vector2 = Vector2.ZERO
+var animstate: String = "Idle"
 
 # ---
 # Node hooks
@@ -63,8 +64,9 @@ func _send_player_data_packet() -> void:
 
 
 func _movement() -> void:
-	# Apply gravity to the vertical axis of the motion.
-	motion.y += GRAVITY
+	if not is_on_floor():
+		# Apply gravity to the vertical axis of the motion.
+		motion.y += GRAVITY
 
 	# LIMIT the amount of fall speed.
 	if motion.y >= MAX_FALL:
@@ -84,6 +86,9 @@ func _movement() -> void:
 		# Apply deceration if no input is pressed.
 		motion.x = lerp(motion.x, 0, 0.2)
 
+	if is_on_ceiling():
+		motion.y += GRAVITY * 2
+
 	# Set the player in motion with the set motion vector.
 	var _move: Vector2 = move_and_slide(motion, Vector2.UP)
 
@@ -95,8 +100,10 @@ func _handle_animations() -> void:
 	# Set the idle animation, if no motion is being used.
 	if (motion.x >= -IDLE_MIN && motion.x <= IDLE_MIN) and is_on_floor():
 		animation.play("IdleBlue")
+		animstate = "Idle"
 		return
 
 	if is_on_floor():
 		animation.play("RunBlue")
+		animstate = "Run"
 		return
