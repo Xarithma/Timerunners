@@ -210,6 +210,17 @@ func _on_Lobby_Joined(lobbyID: int, _permissions: int, _locked: bool, _response:
 	# Get the lobby members
 	_get_Lobby_Members()
 
+	# Get player character colour
+	match Globals.LOBBY_MEMBERS.size():
+		0:
+			Globals.character_colour = "Blue"
+		1:
+			Globals.character_colour = "Red"
+		2:
+			Globals.character_colour = "Green"
+		3:
+			Globals.character_colour = "Yellow"
+
 	# Make the initial handshake
 	Globals.make_P2P_Handshake()
 

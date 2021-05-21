@@ -12,6 +12,9 @@ var LOBBY_ID: int = 0
 var LOBBY_MEMBERS: Array = []
 var LOBBY_INVITE_ARG: bool = false
 
+# Game vars
+var character_colour: String = "Blue"
+
 
 func _ready() -> void:
 	var INIT: Dictionary = Steam.steamInit()
@@ -66,6 +69,12 @@ func _read_P2P_Packet() -> void:
 		# Append logic here to deal with packet data
 		if READABLE.values()[0] == "startgame":
 			var _load_game = get_tree().change_scene("res://Game.tscn")
+
+		if READABLE.keys()[1] == "position":
+			for node in get_tree().get_nodes_in_group("NetworkPlayer"):
+				if node.name == READABLE.values()[0]:
+					node.global_position = Vector2(READABLE.value[1])
+					node.get_node("Visual/AnimationPlayer").play(READABLE.values()[2])
 
 
 func send_P2P_Packet(target: String, packet_data: Dictionary) -> void:
