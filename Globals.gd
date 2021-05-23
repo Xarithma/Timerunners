@@ -65,11 +65,17 @@ func _read_P2P_Packet() -> void:
 
 		# Print the packet to output
 		print("Packet: " + str(READABLE))
+		
+		# Debug the type of the issue to resolve the problem.
+		print("Debug line:")
+		print(typeof(READABLE.values()[0]))
 
 		# Append logic here to deal with packet data
 		if READABLE.values()[0] == "startgame":
 			var _load_game = get_tree().change_scene("res://Game.tscn")
-
+		
+		# TODO: Fix the networking error here.
+		# Handle player data packets, if the 2nd data is a position data.
 		if READABLE.keys()[1] == "position":
 			for node in get_tree().get_nodes_in_group("NetworkPlayer"):
 				if node.name == READABLE.values()[0]:

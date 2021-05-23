@@ -18,6 +18,7 @@ const FLOOR_DETECT_DISTANCE: int = 10
 
 var motion: Vector2 = Vector2.ZERO
 var animstate: String = "Idle"
+var in_jump: bool = false
 
 # ---
 # Node hooks
@@ -45,8 +46,6 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("move_right"):
 		texture.flip_h = false
 
-	if event.is_action_pressed("jump") and is_on_floor():
-		motion.y = -JUMP
 
 
 func _physics_process(_delta: float) -> void:
@@ -68,6 +67,25 @@ func _send_player_data_packet() -> void:
 	)
 
 
+func _jump() -> void:
+	# When released, the jump damping logic should be played.
+	if Input.is_action_just_released("jump") and in_jump:
+		# Add the jump force const to the jump amount.
+		motion.y *= 0.6
+	
+	# TODO: Double jump!!!
+	# Execute jump logic, when "jump" is pressed.
+	if Input.is_action_pressed("jump") and is_on_floor():
+		# Add the jump force const to the jump amount.
+		motion.y -= JUMP
+		
+		# Set in jump to be true.
+		in_jump = true
+	elif is_on_floor():
+		in_jump = false
+
+
+
 func _move_and_snap() -> void:
 	var snap_vector: Vector2 = Vector2.ZERO
 	if motion.y == 0.0:
@@ -79,9 +97,12 @@ func _move_and_snap() -> void:
 
 
 func _movement() -> void:
+	# Gravity logic
 	if not is_on_floor():
-		# Apply gravity to the vertical axis of the motion.
+		# Apply "gravity" to the player.
 		motion.y += GRAVITY
+	
+	_jump()
 
 	# LIMIT the amount of fall speed.
 	if motion.y >= MAX_FALL:
@@ -103,12 +124,6 @@ func _movement() -> void:
 	else:
 		# Apply deceration if no input is pressed.
 		motion.x = lerp(motion.x, 0, 0.2)
-
-	if is_on_ceiling():
-		motion.y += GRAVITY * 2
-
-	# Set the player in motion with the set motion vector.
-	# var _move: Vector2 = move_and_slide(motion, Vector2.UP)
 
 	# Lastly, let's call our animations to the movement.
 	_handle_animations()
