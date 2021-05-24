@@ -72,11 +72,14 @@ func _read_P2P_Packet() -> void:
 		
 		# TODO: Fix the networking error here.
 		# Handle player data packets, if the 2nd data is a position data.
-		if str(READABLE.keys()[1]) == "position":
+		if str(READABLE.keys()[1]) == "player":
 			for node in get_tree().get_nodes_in_group("NetworkPlayer"):
-				if node.name == str(READABLE.values()[0]):
-					node.global_position = Vector2(READABLE.value[1])
-					node.get_node("Visual/AnimationPlayer").play(READABLE.values()[2])
+				if node.name == str(READABLE.values()[1]):
+					node.global_position = Vector2(READABLE.value[2])
+					node.get_node("Visual/AnimationPlayer").play(READABLE.values()[0])
+					return
+				var network_player = load("res://NetworkPlayer.tscn").instance()
+				add_child(network_player)
 
 
 func send_P2P_Packet(target: String, packet_data: Dictionary) -> void:

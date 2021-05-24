@@ -515,7 +515,7 @@ cast_to = Vector2( 0, 40 )
 [node name="Visual" type="Node2D" parent="."]
 
 [node name="Texture" type="Sprite" parent="Visual"]
-texture = ExtResource( 1 )
+texture = ExtResource( 9 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Visual"]
 autoplay = "IdleBlue"
@@ -547,3 +547,5 @@ anims/TurnBlue = SubResource( 26 )
 anims/TurnGreen = SubResource( 27 )
 anims/TurnRed = SubResource( 28 )
 anims/TurnYellow = SubResource( 29 )
+
+[connection signal="animation_finished" from="Visual/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
