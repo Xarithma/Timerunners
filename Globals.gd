@@ -38,7 +38,9 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	Steam.run_callbacks()
-	_read_P2P_Packet()
+
+	for pack in Steam.getAvailableP2PPacketSize(0):
+		_read_P2P_Packet()
 
 
 # ---
@@ -69,17 +71,25 @@ func _read_P2P_Packet() -> void:
 		# Append logic here to deal with packet data
 		if str(READABLE.values()[0]) == "startgame":
 			var _load_game = get_tree().change_scene("res://Game.tscn")
-		
-		# TODO: Fix the networking error here.
-		# Handle player data packets, if the 2nd data is a position data.
-		if str(READABLE.keys()[1]) == "player":
+
+		print(str(READABLE.keys()[0]))
+
+		if str(READABLE.keys()[0]) == "player":
+			var player_name: String = str(READABLE.values()[0])
+			var player_position: Vector2 = Vector2(READABLE.values()[1])
+			var player_anim: String = str(READABLE.values()[2])
+			var player_flip: bool = bool(READABLE.values()[3])
+
 			for node in get_tree().get_nodes_in_group("NetworkPlayer"):
-				if node.name == str(READABLE.values()[1]):
-					node.global_position = Vector2(READABLE.value[2])
-					node.get_node("Visual/AnimationPlayer").play(READABLE.values()[0])
+				if node.name == player_name:
+					node.global_position = player_position
+					node.get_node("Visual/AnimationPlayer").play(player_anim)
+					node.get_node("Visual/Texture").flip_h = player_flip
 					return
-				var network_player = load("res://NetworkPlayer.tscn").instance()
-				add_child(network_player)
+
+			var network_player = load("res://NetworkPlayer.tscn").instance()
+			add_child(network_player)
+			network_player.name = player_name
 
 
 func send_P2P_Packet(target: String, packet_data: Dictionary) -> void:

@@ -61,7 +61,7 @@
 [ext_resource path="res://Graphics/Characters/Dragon/Red/RedDragon(Slide).png" type="Texture" id=59]
 [ext_resource path="res://Graphics/Characters/Dragon/Green/GreenDragon(Idle).png" type="Texture" id=60]
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=1]
 resource_name = "DoubleJumpBlue"
 length = 0.2
 tracks/0/type = "value"
@@ -77,7 +77,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 56 ) ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 resource_name = "DoubleJumpGreen"
 length = 0.2
 tracks/0/type = "value"
@@ -93,7 +93,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 20 ) ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "DoubleJumpRed"
 length = 0.2
 tracks/0/type = "value"
@@ -109,7 +109,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 27 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 resource_name = "DoubleJumpYellow"
 length = 0.2
 tracks/0/type = "value"
@@ -125,7 +125,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 24 ) ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 resource_name = "IdleBlue"
 length = 0.1
 tracks/0/type = "value"
@@ -141,7 +141,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 33 ) ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=6]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -156,7 +156,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 60 ) ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=7]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -171,7 +171,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 1 ) ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=8]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -186,7 +186,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 41 ) ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=9]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -201,7 +201,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 5 ), ExtResource( 6 ) ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=10]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -216,7 +216,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 50 ), ExtResource( 36 ) ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=11]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -231,7 +231,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 52 ), ExtResource( 13 ) ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=12]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -246,7 +246,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 15 ), ExtResource( 55 ) ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=13]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -262,7 +262,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 34 ), ExtResource( 30 ), ExtResource( 35 ), ExtResource( 38 ), ExtResource( 32 ), ExtResource( 4 ) ]
 }
 
-[sub_resource type="Animation" id=15]
+[sub_resource type="Animation" id=14]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -278,7 +278,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 11 ), ExtResource( 17 ), ExtResource( 10 ), ExtResource( 51 ), ExtResource( 53 ), ExtResource( 31 ) ]
 }
 
-[sub_resource type="Animation" id=16]
+[sub_resource type="Animation" id=15]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -293,7 +293,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 8 ), ExtResource( 7 ), ExtResource( 9 ) ]
 }
 
-[sub_resource type="Animation" id=17]
+[sub_resource type="Animation" id=16]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -308,7 +308,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 22 ), ExtResource( 58 ), ExtResource( 29 ) ]
 }
 
-[sub_resource type="Animation" id=18]
+[sub_resource type="Animation" id=17]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -323,7 +323,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 43 ), ExtResource( 48 ), ExtResource( 14 ) ]
 }
 
-[sub_resource type="Animation" id=19]
+[sub_resource type="Animation" id=18]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -338,7 +338,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 40 ), ExtResource( 42 ), ExtResource( 45 ) ]
 }
 
-[sub_resource type="Animation" id=20]
+[sub_resource type="Animation" id=19]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -354,7 +354,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 16 ), ExtResource( 19 ), ExtResource( 25 ), ExtResource( 47 ), ExtResource( 26 ), ExtResource( 57 ) ]
 }
 
-[sub_resource type="Animation" id=21]
+[sub_resource type="Animation" id=20]
 length = 0.6
 loop = true
 tracks/0/type = "value"
@@ -370,7 +370,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 37 ), ExtResource( 18 ), ExtResource( 39 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 44 ) ]
 }
 
-[sub_resource type="Animation" id=22]
+[sub_resource type="Animation" id=21]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -385,7 +385,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 21 ) ]
 }
 
-[sub_resource type="Animation" id=23]
+[sub_resource type="Animation" id=22]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -400,7 +400,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 12 ) ]
 }
 
-[sub_resource type="Animation" id=24]
+[sub_resource type="Animation" id=23]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -415,7 +415,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 59 ) ]
 }
 
-[sub_resource type="Animation" id=25]
+[sub_resource type="Animation" id=24]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -430,7 +430,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 23 ) ]
 }
 
-[sub_resource type="Animation" id=26]
+[sub_resource type="Animation" id=25]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -445,7 +445,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 54 ) ]
 }
 
-[sub_resource type="Animation" id=27]
+[sub_resource type="Animation" id=26]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -460,7 +460,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 28 ) ]
 }
 
-[sub_resource type="Animation" id=28]
+[sub_resource type="Animation" id=27]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -475,7 +475,7 @@ tracks/0/keys = {
 "values": [ ExtResource( 46 ) ]
 }
 
-[sub_resource type="Animation" id=29]
+[sub_resource type="Animation" id=28]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:texture")
@@ -490,11 +490,13 @@ tracks/0/keys = {
 "values": [ ExtResource( 49 ) ]
 }
 
-[sub_resource type="CapsuleShape2D" id=30]
+[sub_resource type="CapsuleShape2D" id=29]
 radius = 16.0
 height = 32.0
 
-[node name="NetworkPlayer" type="Node2D"]
+[node name="NetworkPlayer" type="Node2D" groups=[
+"NetworkPlayer",
+]]
 
 [node name="Visual" type="Node2D" parent="."]
 
@@ -503,36 +505,36 @@ texture = ExtResource( 56 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Visual"]
 autoplay = "IdleBlue"
-anims/DoubleJumpBlue = SubResource( 2 )
-anims/DoubleJumpGreen = SubResource( 3 )
-anims/DoubleJumpRed = SubResource( 4 )
-anims/DoubleJumpYellow = SubResource( 5 )
-anims/IdleBlue = SubResource( 6 )
-anims/IdleGreen = SubResource( 7 )
-anims/IdleRed = SubResource( 8 )
-anims/IdleYellow = SubResource( 9 )
-anims/JumpBlue = SubResource( 10 )
-anims/JumpGreen = SubResource( 11 )
-anims/JumpRed = SubResource( 12 )
-anims/JumpYellow = SubResource( 13 )
-anims/RunBlue = SubResource( 14 )
-anims/RunGreen = SubResource( 15 )
-anims/RunJumpBlue = SubResource( 16 )
-anims/RunJumpGreen = SubResource( 17 )
-anims/RunJumpRed = SubResource( 18 )
-anims/RunJumpYellow = SubResource( 19 )
-anims/RunRed = SubResource( 20 )
-anims/RunYellow = SubResource( 21 )
-anims/SlideBlue = SubResource( 22 )
-anims/SlideGreen = SubResource( 23 )
-anims/SlideRed = SubResource( 24 )
-anims/SlideYellow = SubResource( 25 )
-anims/TurnBlue = SubResource( 26 )
-anims/TurnGreen = SubResource( 27 )
-anims/TurnRed = SubResource( 28 )
-anims/TurnYellow = SubResource( 29 )
+anims/DoubleJumpBlue = SubResource( 1 )
+anims/DoubleJumpGreen = SubResource( 2 )
+anims/DoubleJumpRed = SubResource( 3 )
+anims/DoubleJumpYellow = SubResource( 4 )
+anims/IdleBlue = SubResource( 5 )
+anims/IdleGreen = SubResource( 6 )
+anims/IdleRed = SubResource( 7 )
+anims/IdleYellow = SubResource( 8 )
+anims/JumpBlue = SubResource( 9 )
+anims/JumpGreen = SubResource( 10 )
+anims/JumpRed = SubResource( 11 )
+anims/JumpYellow = SubResource( 12 )
+anims/RunBlue = SubResource( 13 )
+anims/RunGreen = SubResource( 14 )
+anims/RunJumpBlue = SubResource( 15 )
+anims/RunJumpGreen = SubResource( 16 )
+anims/RunJumpRed = SubResource( 17 )
+anims/RunJumpYellow = SubResource( 18 )
+anims/RunRed = SubResource( 19 )
+anims/RunYellow = SubResource( 20 )
+anims/SlideBlue = SubResource( 21 )
+anims/SlideGreen = SubResource( 22 )
+anims/SlideRed = SubResource( 23 )
+anims/SlideYellow = SubResource( 24 )
+anims/TurnBlue = SubResource( 25 )
+anims/TurnGreen = SubResource( 26 )
+anims/TurnRed = SubResource( 27 )
+anims/TurnYellow = SubResource( 28 )
 
 [node name="LogicHitbox" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LogicHitbox"]
-shape = SubResource( 30 )
+shape = SubResource( 29 )
