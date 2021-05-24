@@ -66,13 +66,11 @@ func _read_P2P_Packet() -> void:
 		var READABLE = bytes2var(PACKET.data.subarray(1, PACKET_SIZE - 1))
 
 		# Print the packet to output
-		print("Packet: " + str(READABLE))
+		# print("Packet: " + str(READABLE))
 
 		# Append logic here to deal with packet data
 		if str(READABLE.values()[0]) == "startgame":
 			var _load_game = get_tree().change_scene("res://Game.tscn")
-
-		print(str(READABLE.keys()[0]))
 
 		if str(READABLE.keys()[0]) == "player":
 			var player_name: String = str(READABLE.values()[0])
