@@ -63,8 +63,8 @@
 [ext_resource path="res://Graphics/Characters/Dragon/Yellow/Running/YellowDragon(Running)4.png" type="Texture" id=61]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 24.0
-height = 16.0
+radius = 16.0
+height = 24.0
 
 [sub_resource type="Animation" id=2]
 resource_name = "DoubleJumpBlue"
@@ -497,9 +497,11 @@ tracks/0/keys = {
 
 [node name="Localplayer" type="KinematicBody2D"]
 position = Vector2( 120, 384 )
+collision/safe_margin = 0.001
 script = ExtResource( 2 )
 
 [node name="PhysicsHitbox" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 4 )
 shape = SubResource( 1 )
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
@@ -508,9 +510,13 @@ smoothing_enabled = true
 
 [node name="PlatformDetector" type="RayCast2D" parent="."]
 enabled = true
-cast_to = Vector2( 0, 40 )
+cast_to = Vector2( 0, 48 )
 
 [node name="Visual" type="Node2D" parent="."]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
 
 [node name="Texture" type="Sprite" parent="Visual"]
 texture = ExtResource( 9 )
