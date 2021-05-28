@@ -14,6 +14,19 @@ var LOBBY_INVITE_ARG: bool = false
 
 # Game vars
 var character_colour: String = "Blue"
+var game_seed: int = 0
+
+# Chunks
+var left_chunks: Array = []
+var right_chunks: Array = []
+var up_chunks: Array = []
+var down_chunks: Array = []
+
+# Backgrounds
+var backgrounds: Array = []
+
+# Store, so no duplications happen
+var chunk_positions = [Vector2.ZERO]
 
 
 func _ready() -> void:
@@ -35,12 +48,71 @@ func _ready() -> void:
 	var _tmp: int = Steam.connect("p2p_session_request", self, "_on_P2P_Session_Request")
 	_tmp = Steam.connect("p2p_session_connect_fail", self, "_on_P2P_Session_Connect_Fail")
 
+	# Get the seed and load the chunks
+	_game_setup()
+
 
 func _process(_delta: float) -> void:
 	Steam.run_callbacks()
 
 	for pack in Steam.getAvailableP2PPacketSize(0):
 		_read_P2P_Packet()
+
+
+# ---
+# Game functions
+# ---
+
+
+func _game_setup() -> void:
+	# Randomize the seed
+	randomize()
+
+	# Get the random seed
+	game_seed = randi()
+
+	# Set a random seed
+	seed(game_seed)
+
+	# Load the rooms
+	_load_in_game_elements(left_chunks, "res://MapElements/", "Left", true)
+	_load_in_game_elements(right_chunks, "res://MapElements/", "Right", true)
+	_load_in_game_elements(up_chunks, "res://MapElements/", "Up", true)
+	_load_in_game_elements(down_chunks, "res://MapElements/", "Down", true)
+
+	# Load the backgrounds
+	_load_in_game_elements(backgrounds, "res://Backgrounds/")
+
+
+func _load_in_game_elements(
+	array_to_add: Array, path: String, prefix: String = "", should_load: bool = false
+) -> void:
+	var dir = Directory.new()
+	dir.open(path)
+	dir.list_dir_begin()
+
+	while true:
+		var file = dir.get_next()
+		if file == "":
+			break
+		elif ! file.begins_with("."):
+			if prefix in file or prefix == "":
+				var element = load(path + file) if should_load else path + file
+				array_to_add.append(element)
+	dir.list_dir_end()
+
+
+func spawn_chunk(chunk_array: Array, position: Vector2) -> void:
+	# Get the random index from randi
+	var random_index = randi() % chunk_array.size()
+
+	# Store the new chunk, so the position can be set
+	var chunk = chunk_array[random_index].instance()
+
+	call_deferred("add_child", chunk)
+
+	# Set the new position
+	chunk.global_position = position
 
 
 # ---
@@ -70,7 +142,11 @@ func _read_P2P_Packet() -> void:
 
 		# Append logic here to deal with packet data
 		if str(READABLE.values()[0]) == "startgame":
+			# Load the game
 			var _load_game = get_tree().change_scene("res://Game.tscn")
+
+			# Set the game seed
+			Globals.game_seed = int(READABLE.values()[1])
 
 		if str(READABLE.keys()[0]) == "player":
 			var player_name: String = str(READABLE.values()[0])

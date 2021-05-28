@@ -165,7 +165,20 @@ func _start_game() -> void:
 	if Globals.LOBBY_MEMBERS == []:
 		return
 
-	Globals.send_P2P_Packet("all", {"message": "startgame", "from": Globals.STEAM_ID})
+	if Globals.character_colour != "Blue":
+		_display_message("You are not the lobby leader, you can't start the game.")
+		return
+
+	# TODO: Add custom seeds
+	randomize()
+
+	# Set the game seed to a new random int
+	Globals.game_seed = randi()
+
+	# Send the seed to everyone
+	Globals.send_P2P_Packet("all", {"message": "startgame", "seed": Globals.game_seed})
+
+	# Load the game
 	var _load_game = get_tree().change_scene("res://Game.tscn")
 
 

@@ -505,6 +505,7 @@ position = Vector2( 0, 4 )
 shape = SubResource( 1 )
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
+position = Vector2( 0, -64 )
 current = true
 smoothing_enabled = true
 

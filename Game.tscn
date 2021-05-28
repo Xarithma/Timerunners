@@ -1,12 +1,28 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://MapElements/LeftRight01.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Localplayer.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Backgrounds/MapBackground1.png" type="Texture" id=4]
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" groups=[
+"Game",
+]]
+
+[node name="LeftRight01" parent="." instance=ExtResource( 1 )]
+position = Vector2( -72, -360 )
 
 [node name="Localplayer" parent="." instance=ExtResource( 2 )]
 position = Vector2( 56, 208 )
 
-[node name="LeftRight01" parent="." instance=ExtResource( 1 )]
-tile_data = PoolIntArray( 327693, 1610612736, 0, 327694, 1610612736, 0, 327695, 1610612736, 0, 327696, 1610612736, 0, 458759, 1610612740, 0, 458760, 1610612736, 0, 458761, 1610612736, 0, 458762, 1610612739, 0, 589823, 1610612736, 0, 524288, 1610612736, 0, 524289, 1610612736, 0, 524290, 1610612736, 0, 524291, 1610612736, 0, 524292, 1610612736, 0, 524293, 1610612736, 0, 524294, 1610612736, 0, 524295, 1610612736, 0, 524296, 1610612736, 0, 524297, 1610612736, 0, 524298, 1610612736, 0, 524299, 1610612736, 0, 524300, 1610612736, 0, 524301, 1610612736, 0, 524302, 1610612736, 0, 524303, 1610612736, 0, 524304, 1610612736, 0, 524305, 1610612736, 0, 524306, 1610612736, 0, 524307, 1610612736, 0, 524308, 1610612736, 0, 524309, 1610612736, 0, 524310, 1610612736, 0, 524311, 1610612736, 0, 524312, 1610612736, 0 )
+[node name="Background" type="ParallaxBackground" parent="."]
+
+[node name="Texture" type="TextureRect" parent="Background"]
+margin_right = 1153.0
+margin_bottom = 624.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 4 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
