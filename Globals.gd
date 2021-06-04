@@ -74,11 +74,15 @@ func _game_setup() -> void:
 	# Set a random seed
 	seed(game_seed)
 
+	# Load the scenes with the load element function.
+	# ? This is just clarification, nothing more.
+	var load_scene: bool = true
+
 	# Load the rooms
-	_load_in_game_elements(left_chunks, "res://MapElements/", "Left", true)
-	_load_in_game_elements(right_chunks, "res://MapElements/", "Right", true)
-	_load_in_game_elements(up_chunks, "res://MapElements/", "Up", true)
-	_load_in_game_elements(down_chunks, "res://MapElements/", "Down", true)
+	_load_in_game_elements(left_chunks, "res://MapElements/", "Left", load_scene)
+	_load_in_game_elements(right_chunks, "res://MapElements/", "Right", load_scene)
+	_load_in_game_elements(up_chunks, "res://MapElements/", "Up", load_scene)
+	_load_in_game_elements(down_chunks, "res://MapElements/", "Down", load_scene)
 
 	# Load the backgrounds
 	_load_in_game_elements(backgrounds, "res://Backgrounds/")
@@ -142,6 +146,19 @@ func _read_P2P_Packet() -> void:
 
 		# Append logic here to deal with packet data
 		if str(READABLE.values()[0]) == "startgame":
+			# Prevent the map generating in two directions
+			# TODO: Prevent the player from falling off the map
+			var start_left: bool = randi() % 2
+
+			var chunk_distance: int = 592
+			var left_pos: Vector2 = Vector2(-chunk_distance, 0)
+			var right_pos: Vector2 = Vector2(chunk_distance, 0)
+
+			if start_left:
+				chunk_positions.append(left_pos)
+			else:
+				chunk_positions.append(right_pos)
+
 			# Load the game
 			var _load_game = get_tree().change_scene("res://Game.tscn")
 
