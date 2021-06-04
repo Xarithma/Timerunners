@@ -7,6 +7,12 @@ extends Node2D
 enum lobby_status { Private, Friends, Public, Invisible }
 enum search_distance { Close, Default, Far, Worldwide }
 
+# ---
+# Lobby vars
+# ---
+
+var lobby_leader: bool = false
+
 # ---
 # Object definitions
 # ---
@@ -163,19 +169,20 @@ func _leave_Lobby() -> void:
 
 func _start_game() -> void:
 	if Globals.LOBBY_MEMBERS == []:
+		_display_message("You haven't joined/made a lobby yet.")
 		return
 
-	if Globals.character_colour != "Blue":
+	if not lobby_leader:
 		_display_message("You are not the lobby leader, you can't start the game.")
 		return
 
 	# TODO: Add custom seeds
 	randomize()
 
-	# Set the game seed to a new random int
+	# Set a random seed
 	Globals.game_seed = randi()
 
-	# Send the seed to everyone
+	# Send the seed to everyone, and start the game
 	Globals.send_P2P_Packet("all", {"message": "startgame", "seed": Globals.game_seed})
 
 	# Load the game
@@ -223,10 +230,14 @@ func _on_Lobby_Joined(lobbyID: int, _permissions: int, _locked: bool, _response:
 	# Get the lobby members
 	_get_Lobby_Members()
 
+	# Only turn on lobby leader if you are the only one in the lobby.
+	lobby_leader = false
+
 	# Get player character colour
 	match Globals.LOBBY_MEMBERS.size():
 		1:
 			Globals.character_colour = "Blue"
+			lobby_leader = true
 		2:
 			Globals.character_colour = "Red"
 		3:
