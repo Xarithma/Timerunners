@@ -14,13 +14,21 @@ var motion: Vector2 = Vector2.ZERO
 var animstate: String = "Idle"
 var airstate: bool = false
 var in_jump: bool = false
+var in_climb: bool = false
+var can_climb: bool = false
 
 # Hooks
 onready var camera := $PlayerCamera
-onready var hitbox := $PhysicsHitbox
+onready var physics_hitbox := $PhysicsHitbox
+onready var logic_area := $LogicHitArea
 onready var texture := $Visual/Texture
 onready var animation := $Visual/AnimationPlayer
 onready var platform_detector := $PlatformDetector
+
+# Connects
+onready var animation_connect = animation.connect("animation_finished", self, "_anim_finished")
+onready var logic_body_entered = logic_area.connect("body_entered", self, "_on_collide")
+onready var logic_body_exited = logic_area.connect("body_exited", self, "_on_uncollide")
 
 
 func _input(event: InputEvent) -> void:
@@ -66,6 +74,16 @@ func _jump() -> void:
 		motion.y *= 0.6
 
 
+func _climb() -> void:
+	if not in_climb:
+		return
+	
+	if Input.is_action_just_pressed("jump"):
+		can_climb = false
+		in_climb = false
+		motion.y -= JUMP
+
+
 # Movement fix idk
 func _move_and_snap() -> void:
 	var snap_vector: Vector2 = Vector2.ZERO
@@ -81,21 +99,37 @@ func _move_and_snap() -> void:
 
 
 func _movement() -> void:
-	if not is_on_floor():
-		motion.y += GRAVITY
-
-	# Don't... I know.
-	_jump()
-
-	if motion.y >= MAX_FALL:
-		motion.y = MAX_FALL
-
-	motion.x = clamp(motion.x, -MAX_SPEED, MAX_SPEED)
-
+	# Get the horizontal direction by input strenght
 	var horizontal_direction: float = (
 		Input.get_action_strength("move_right")
 		- Input.get_action_strength("move_left")
 	)
+
+	# All horizontal movement logic
+	_do_horizontal_motion(horizontal_direction)
+
+	# All vertical movement logic
+	_do_vertical_motion()
+
+	# All jump logic
+	_jump()
+
+	# All climbing logic
+	_climb()
+
+	# Yes, I know, I'm increasing the time for nothing
+	_handle_climb_cooldown()
+
+	# Yes, I know that this is not the best method
+	_handle_animations(horizontal_direction)
+
+	# Movement fix call idk pasted it
+	_move_and_snap()
+
+
+func _do_horizontal_motion(horizontal_direction: float) -> void:
+	# Limit the horizontal motion to the max speed
+	motion.x = clamp(motion.x, -MAX_SPEED, MAX_SPEED)
 
 	# Main horizontal movement logic
 	if horizontal_direction != 0:
@@ -103,11 +137,17 @@ func _movement() -> void:
 	else:
 		motion.x = lerp(motion.x, 0, 0.2)
 
-	# Yes, I know that this is not the best method
-	_handle_animations(horizontal_direction)
 
-	# Movement fix call idk pasted it
-	_move_and_snap()
+func _do_vertical_motion() -> void:
+	if is_on_floor() or in_climb:
+		return
+
+	# Perfection
+	motion.y += GRAVITY
+
+	# Don't fall too hard
+	if motion.y >= MAX_FALL:
+		motion.y = MAX_FALL
 
 
 func _handle_animations(horizontal_movement: float) -> void:
@@ -139,7 +179,29 @@ func _handle_animations(horizontal_movement: float) -> void:
 		animation.play(animstate)
 
 
-func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
+func _handle_climb_cooldown() -> void:
+	# Don't run if can climb
+	if can_climb:
+		return
+
+	# After a short cooldown, can cooldown again
+	yield(get_tree().create_timer(0.1), "timeout")
+	can_climb = true
+
+
+func _anim_finished(anim_name: String) -> void:
 	# Play Jump anim after RunJump for falling effect.
 	if anim_name == "RunJump" + Globals.character_colour:
 		animation.play("Jump" + Globals.character_colour)
+
+
+func _on_collide(body: Node) -> void:
+	if body.name == "Climb" and can_climb:
+		motion.y = 0
+		in_climb = true
+
+
+func _on_uncollide(body: Node) -> void:
+	if body.name == "Climb":
+		in_climb = false
+		can_climb = true

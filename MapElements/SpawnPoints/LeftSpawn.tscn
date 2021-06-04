@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://MapElements/SpawnPoints/SpawnPoint.gd" type="Script" id=1]
+
+[node name="LeftSpawn" type="Position2D"]
+position = Vector2( -592, 0 )
+script = ExtResource( 1 )
+opening = "Right"

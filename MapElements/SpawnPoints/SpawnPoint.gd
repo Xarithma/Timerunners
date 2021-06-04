@@ -10,6 +10,7 @@ func _ready() -> void:
 		# If there is already a spawned chunk, don't run further
 		if Globals.chunk_positions.has(global_position):
 			queue_free()
+			return
 
 		# Add the chunk to the array
 		Globals.chunk_positions.append(global_position)
