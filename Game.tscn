@@ -8,11 +8,10 @@
 "Game",
 ]]
 
-[node name="LeftRight01" parent="." instance=ExtResource( 1 )]
-position = Vector2( -72, -360 )
+[node name="LeftRight" parent="." instance=ExtResource( 1 )]
 
 [node name="Localplayer" parent="." instance=ExtResource( 2 )]
-position = Vector2( 56, 208 )
+position = Vector2( 64, 224 )
 
 [node name="Background" type="ParallaxBackground" parent="."]
 
@@ -24,5 +23,6 @@ size_flags_vertical = 3
 texture = ExtResource( 4 )
 expand = true
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
