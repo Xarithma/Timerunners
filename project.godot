@@ -12,12 +12,12 @@ config_version=4
 
 config/name="Parkour Racer"
 config/description="This is like Speedrunners, but kinda better."
-run/main_scene="res://SteamLobby.tscn"
+run/main_scene="res://source/Menus/Lobby/SteamLobby.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-Globals="*res://Globals.gd"
+Globals="*res://source/Globals.gd"
 
 [display]
 
