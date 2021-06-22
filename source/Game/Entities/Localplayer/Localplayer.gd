@@ -4,16 +4,17 @@ const MAX_SPEED: int = 500
 const MAX_FALL: int = 750
 const ACCELERATION: int = 40
 const GRAVITY: int = 20
-const JUMP: int = 500
+const JUMP: int = 300
 const IDLE_MIN: int = 20
 const FLOOR_DETECT_DISTANCE: int = 10
 
 # -> Movement
-var motion: Vector2 = Vector2.ZERO
-var animstate: String = "Idle"
-var airstate: bool = false
-var in_jump: bool = false
-var in_climb: bool = false
+var movement: Vector2 = Vector2.ZERO
+var animation_name: String = "Idle"
+var stop_anim_loop: bool = false
+
+var IN_JUMP: bool = false
+var IN_CLIMB: bool = false
 var can_climb: bool = false
 
 # -> Hooks
@@ -39,7 +40,7 @@ func _input(event: InputEvent) -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	_movement()
+	_move_player()
 	_send_player_data_packet()
 
 
@@ -50,103 +51,146 @@ func _send_player_data_packet() -> void:
 			"message": "player_data",
 			"player": Globals.STEAM_ID,
 			"position": global_position,
-			"anim": animstate,
+			"anim": animation_name,
 			"flip": texture.flip_h
 		}
 	)
 
 
-func _movement() -> void:
-	# * -> Horizontal movement
+func _handle_horizontal_movement(horizontal_direction: float) -> void:
+	movement.x = clamp(movement.x, -MAX_SPEED, MAX_SPEED)
+
+	if horizontal_direction != 0:
+		movement.x += ACCELERATION * horizontal_direction
+	else:
+		movement.x = lerp(movement.x, 0, 0.2)
+
+	if IN_CLIMB:
+		movement.x *= 0.8
+
+
+func _handle_falling() -> void:
+	if is_on_floor():
+		return
+
+	if IN_CLIMB:
+		return
+
+	movement.y += GRAVITY
+
+	if movement.y >= MAX_FALL:
+		movement.y = MAX_FALL
+
+
+func _apply_climb_cooldown() -> void:
+	yield(get_tree().create_timer(0.1), "timeout")
+	can_climb = true
+
+
+func _jump_from_climb() -> void:
+	if not Input.is_action_just_pressed("jump"):
+		return
+
+	# if not can_climb:
+	# 	return
+
+	movement.y -= JUMP * 0.9
+	can_climb = false
+	IN_CLIMB = false
+
+	_apply_climb_cooldown()
+
+
+func _handle_jumping() -> void:
+	if Input.is_action_pressed("jump") and is_on_floor():
+		movement.y -= JUMP
+		IN_JUMP = true
+	elif is_on_floor():
+		IN_JUMP = false
+
+	if Input.is_action_just_released("jump") and IN_JUMP:
+		movement.y *= 0.6
+
+	_jump_from_climb()
+
+
+func _set_on_ground_animation(horizontal_direction: float) -> void:
+	var idle_anim_name: String = "Idle" + Globals.player_color
+	var run_anim_name: String = "Run" + Globals.player_color
+	animation_name = idle_anim_name if not horizontal_direction else run_anim_name
+
+
+func _set_in_air_animation(horizontal_direction: float) -> void:
+	var jump_anim_name: String = "Jump" + Globals.player_color
+	var run_jump_anim_name: String = "RunJump" + Globals.player_color
+	animation_name = jump_anim_name if not horizontal_direction else run_jump_anim_name
+
+
+func _handle_animations(horizontal_direction: float) -> void:
+	if is_on_floor():
+		_set_on_ground_animation(horizontal_direction)
+		stop_anim_loop = false
+		animation.play(animation_name)
+	elif not stop_anim_loop:
+		_set_in_air_animation(horizontal_direction)
+		stop_anim_loop = true
+		animation.play(animation_name)
+
+
+func _fix_movement() -> void:
+	# ! Not done by me, don't know why it works, it just does
+	var snap_vector: Vector2 = Vector2.ZERO
+
+	if movement.y == 0.0:
+		snap_vector = Vector2.DOWN * FLOOR_DETECT_DISTANCE
+
+	var is_on_platform: bool = platform_detector.is_colliding()
+
+	movement = move_and_slide_with_snap(
+		movement, snap_vector, Vector2.UP, not is_on_platform, 4, 0.8, false
+	)
+
+
+func _move_player() -> void:
 	var horizontal_direction: float = (
 		Input.get_action_strength("move_right")
 		- Input.get_action_strength("move_left")
 	)
 
-	motion.x = clamp(motion.x, -MAX_SPEED, MAX_SPEED)
+	_handle_horizontal_movement(horizontal_direction)
+	_handle_falling()
+	_handle_jumping()
+	_fix_movement()
 
-	if horizontal_direction != 0:
-		motion.x += ACCELERATION * horizontal_direction
-	else:
-		motion.x = lerp(motion.x, 0, 0.2)
+	_handle_animations(horizontal_direction)
 
-	# * -> Vertical motion
-	if not is_on_floor() and not in_climb:
-		motion.y += GRAVITY
 
-		if motion.y >= MAX_FALL:
-			motion.y = MAX_FALL
-
-	# * -> Jump
-	if Input.is_action_pressed("jump") and is_on_floor():
-		motion.y -= JUMP
-		in_jump = true
-	elif is_on_floor():
-		in_jump = false
-
-	if Input.is_action_just_released("jump") and in_jump:
-		motion.y *= 0.6
-
-	# * -> Climb
-	if Input.is_action_just_pressed("jump") and in_climb:
-		can_climb = false
-		in_climb = false
-		motion.y -= JUMP
-
+func _start_climbing() -> void:
 	if not can_climb:
-		yield(get_tree().create_timer(0.1), "timeout")
-		can_climb = true
+		return
 
-	# * -> Animations
-	var no_horizontal_input: bool = not horizontal_direction
-
-	if is_on_floor():
-		airstate = false
-
-		var idle: String = "Idle" + Globals.player_color
-		var run: String = "Run" + Globals.player_color
-		animstate = idle if no_horizontal_input else run
-
-		animation.play(animstate)
-
-	elif not airstate and not platform_detector.is_colliding():
-		airstate = true
-
-		var jump: String = "Jump" + Globals.player_color
-		var run_jump: String = "RunJump" + Globals.player_color
-		animstate = jump if no_horizontal_input else run_jump
-
-		animation.play(animstate)
-
-	# * -> Movement fix
-	# ! Not done by me, don't know why it works, it just does
-	var snap_vector: Vector2 = Vector2.ZERO
-
-	if motion.y == 0.0:
-		snap_vector = Vector2.DOWN * FLOOR_DETECT_DISTANCE
-
-	var is_on_platform: bool = platform_detector.is_colliding()
-
-	motion = move_and_slide_with_snap(
-		motion, snap_vector, Vector2.UP, not is_on_platform, 4, 0.8, false
-	)
+	movement.y = 0
+	IN_CLIMB = true
 
 
-# VVV Connects VVV
+func _stop_climbing() -> void:
+	IN_CLIMB = false
+	can_climb = true
 
 
-func _anim_finished(anim_name: String) -> void:
-	if anim_name == "RunJump" + Globals.player_color:
+# * -> Connects
+
+
+func _anim_finished(last_animation: String) -> void:
+	if last_animation == "RunJump" + Globals.player_color:
 		animation.play("Jump" + Globals.player_color)
 
 
 func _on_collide(body: Node) -> void:
-	if body.name == "Climb" and can_climb:
-		motion.y = 0
-		in_climb = true
+	if body.name == "Climb":
+		_start_climbing()
 
 
 func _on_uncollide(body: Node) -> void:
 	if body.name == "Climb":
-		in_climb = false
-		can_climb = true
+		_stop_climbing()

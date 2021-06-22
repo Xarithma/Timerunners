@@ -6,14 +6,14 @@ enum search_distance { Close, Default, Far, Worldwide }
 onready var steam_username: Label = $SteamName
 onready var set_lobby_name: TextEdit = $Create/LobbySetter
 onready var get_lobby_name: Label = $Chat/LobbyName
-onready var lobby_output: RichTextLabel = $Chat/RichTextLabel
-onready var lobby_popup: PopupPanel = $LobbyListPopup
-onready var lobby_list: VBoxContainer = $LobbyListPopup/Panel/Scroll/VBox
+onready var lobby_chat_text: RichTextLabel = $Chat/RichTextLabel
+onready var available_lobbies_window: PopupPanel = $LobbyListPopup
+onready var available_lobbies_list: VBoxContainer = $LobbyListPopup/Panel/Scroll/VBox
 onready var player_count: Label = $Players/Label
 onready var player_list: RichTextLabel = $Players/RichTextLabel
 onready var chat_input: TextEdit = $Message/TextEdit
 
-const lobby_selection: PackedScene = preload("res://source/Menus/Lobby/LobbyListButton.tscn")
+const lobby_select_button: PackedScene = preload("res://source/Menus/Lobby/LobbyListButton.tscn")
 
 # -> Godot functions <-
 
@@ -47,7 +47,7 @@ func _create_Lobby() -> void:
 
 
 func _join_Lobby(lobbyID: int) -> void:
-	lobby_popup.hide()
+	available_lobbies_window.hide()
 	var lobby_name = Steam.getLobbyData(lobbyID, "name")
 	_display_message("Joining lobby " + str(lobby_name) + "...")
 
@@ -124,7 +124,7 @@ func _start_game() -> void:
 
 
 func _display_message(message: String) -> void:
-	lobby_output.add_text("\n" + str(message))
+	lobby_chat_text.add_text("\n" + str(message))
 
 
 # -> GodotSteam signal hooks <-
@@ -209,7 +209,7 @@ func _on_Lobby_Match_List(lobbies: Array) -> void:
 	for LOBBY in lobbies:
 		var LOBBY_NAME: String = Steam.getLobbyData(LOBBY, "name")
 		var LOBBY_MEMBERS: int = Steam.getNumLobbyMembers(LOBBY)
-		var LOBBY_BUTTON = lobby_selection.instance()
+		var LOBBY_BUTTON = lobby_select_button.instance()
 
 		LOBBY_BUTTON.set_text(
 			(
@@ -227,7 +227,7 @@ func _on_Lobby_Match_List(lobbies: Array) -> void:
 		LOBBY_BUTTON.set_name("lobby_" + str(LOBBY))
 		var _tmp: int = LOBBY_BUTTON.connect("pressed", self, "_join_Lobby", [LOBBY])
 
-		lobby_list.add_child(LOBBY_BUTTON)
+		available_lobbies_list.add_child(LOBBY_BUTTON)
 
 
 func _on_Lobby_Message(_result, user, message: String, _type):
@@ -243,7 +243,7 @@ func _on_Create_pressed() -> void:
 
 
 func _on_Join_pressed() -> void:
-	lobby_popup.popup()
+	available_lobbies_window.popup()
 
 	Steam.addRequestLobbyListDistanceFilter(search_distance.Worldwide)
 	_display_message("Searching for lobbies...")
@@ -264,7 +264,7 @@ func _on_Message_pressed() -> void:
 
 
 func _on_Close_pressed() -> void:
-	lobby_popup.hide()
+	available_lobbies_window.hide()
 
 
 func _check_Command_Line() -> void:
